@@ -143,6 +143,7 @@ pieces['wk2'] = new Knight('\u2658', 'g1', WHITE, 'wk2')
 pieces['bk1'] = new Knight('\u265E', 'b8', BLACK, 'bk1')
 pieces['bk2'] = new Knight('\u265E', 'g8', BLACK, 'bk2')
     //
+    /*
 pieces['wp1'] = new PawnWhite('\u2659', 'a2', WHITE, 'wp1')
 pieces['wp2'] = new PawnWhite('\u2659', 'b2', WHITE, 'wp2')
 pieces['wp3'] = new PawnWhite('\u2659', 'c2', WHITE, 'wp3')
@@ -151,7 +152,7 @@ pieces['wp5'] = new PawnWhite('\u2659', 'e2', WHITE, 'wp5')
 pieces['wp6'] = new PawnWhite('\u2659', 'f2', WHITE, 'wp6')
 pieces['wp7'] = new PawnWhite('\u2659', 'g2', WHITE, 'wp7')
 pieces['wp8'] = new PawnWhite('\u2659', 'h2', WHITE, 'wp8')
-    //
+*/    //
 pieces['bp1'] = new PawnBlack('\u265F', 'a7', BLACK, 'bp1')
 pieces['bp2'] = new PawnBlack('\u265F', 'b7', BLACK, 'bp2')
 pieces['bp3'] = new PawnBlack('\u265F', 'c7', BLACK, 'bp3')

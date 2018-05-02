@@ -2,10 +2,10 @@
 
 <head>
     <script>
-    // GLOBALS  
-      let id_rc = {}
-      let rc_id = {}
-      const letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
+        // GLOBALS  
+        let id_rc = {}
+        let rc_id = {}
+        const letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
     </script>
 
     <link rel="stylesheet" type="text/css" href="js/logic/style.css">
@@ -25,10 +25,10 @@
         </tr>
     </table>
     <script>
-        let board = {} 
+        let board = {}
         const zeroout = () => {
             for (let domId1 in id_rc) {
-              let domId2 = domId1 + "_2"
+                let domId2 = domId1 + "_2"
                 document.getElementById(domId1).classList.remove("influenced")
                 document.getElementById(domId2).classList.remove("influenced")
                 document.getElementById(domId1).classList.remove("attack")
@@ -51,13 +51,16 @@
                 for (let i = 0; i < possibleSpaces; i++) {
                     r += ary[0]
                     c += ary[1]
-                    let candidateKey = r + "_" + c
-                    if (rc_id.hasOwnProperty(candidateKey)) {
-                        let domId1 = rc_id[candidateKey]
+                    let cellId = r + "_" + c
+                    if (rc_id.hasOwnProperty(cellId)) {
+                        let domId1 = rc_id[cellId]
                         let domId2 = domId1 + "_2"
 
-                        document.getElementById(domId1).classList.add("influenced")
-                        document.getElementById(domId2).classList.add("influenced")
+                        let otherPieceId = board[domId1].getPieceId()
+                        let whatDoesThatCellHave = determineInfluenceOrAttackOrSupport(pawn, otherPieceId, domId1, domId2)
+                        if ( whatDoesThatCellHave > 0 ) {
+                            i += 100; // leave the loop
+                        }
                     }
                 }
             })
@@ -72,14 +75,18 @@
             pawn.moves.forEach((ary, j) => {
                 let r = row + ary[0]
                 let c = col + ary[1]
-                let candidateKey = r + "_" + c
-                if (rc_id.hasOwnProperty(candidateKey)) {
-                  let domId1 = rc_id[candidateKey]
-                  let domId2 = domId1 + "_2"
+                let cellId = r + "_" + c
 
-                  document.getElementById(domId1).classList.add("influenced")
-                  document.getElementById(domId2).classList.add("influenced")
-                }
+                    if (rc_id.hasOwnProperty(cellId)) {
+                        let domId1 = rc_id[cellId]
+                        let domId2 = domId1 + "_2"
+
+                        let otherPieceId = board[domId1].getPieceId()
+determineInfluenceOrAttackOrSupport(pawn, otherPieceId, domId1, domId2)
+
+                    }
+
+
             })
         }
 
@@ -95,41 +102,50 @@
                 let r = row
                 let c = col
                 for (let i = 0; i < p.possibleSpaces; i++) {
-
                     r += ary[0]
                     c += ary[1]
-
-                    let candidateKey = r + "_" + c
-                    if (rc_id.hasOwnProperty(candidateKey)) {
-                        let domId1 = rc_id[candidateKey]
+                    let cellId = r + "_" + c
+                    if (rc_id.hasOwnProperty(cellId)) {
+                        let domId1 = rc_id[cellId]
                         let domId2 = domId1 + "_2"
 
                         let otherPieceId = board[domId1].getPieceId()
-
-                        if ( pieces.hasOwnProperty(otherPieceId )) {
-
-                            let otherColor = pieces[otherPieceId].color
-
-                            if ( otherColor === p.color ) {
-                              document.getElementById(domId1).classList.add("support")
-                              document.getElementById(domId2).classList.add("support")
-                            } else {
-                              document.getElementById(domId1).classList.add("attack")
-                              document.getElementById(domId2).classList.add("attack")
-                            }
-                        } else {
-                          document.getElementById(domId1).classList.add("influenced")
-                          document.getElementById(domId2).classList.add("influenced")
+                        let whatDoesThatCellHave = determineInfluenceOrAttackOrSupport(p, otherPieceId, domId1, domId2)
+                        if ( whatDoesThatCellHave > 0 ) {
+                            i += 100; // leave the loop
                         }
                     }
                 }
             })
         }
 
+        const determineInfluenceOrAttackOrSupport = (piece, otherPieceId, domId1, domId2) => {
+            // 'piece' is the moving piece
+            // 0 = only influence
+            // 1 = support a friendly
+            // 2 = attack
+            // 'otherPieceId' is a piece on a cell ( but there might be not piece there )
+            if (pieces.hasOwnProperty(otherPieceId)) {
+                let otherColor = pieces[otherPieceId].color
+                if (otherColor === piece.color) {
+                    document.getElementById(domId1).classList.add("support")
+                    document.getElementById(domId2).classList.add("support")
+                    return 1
+                } else {
+                    document.getElementById(domId1).classList.add("attack")
+                    document.getElementById(domId2).classList.add("attack")
+                    return 2
+                }
+            }
+            document.getElementById(domId1).classList.add("influenced")
+            document.getElementById(domId2).classList.add("influenced")
+            return 0
+        }
+
         const cellClick = (id) => {
             //console.log(id)
         }
-       
+
 
         function makeLogicBoard() {
             let k = 0
@@ -141,8 +157,8 @@
                     rc_id[rc] = id
                     k++
                     let css = k % 2 == 0 ? 'dark' : 'light'
-                    let cell = new Cell( css, id)
-                    board[id]=cell
+                    let cell = new Cell(css, id)
+                    board[id] = cell
                 }
                 k++
             }
@@ -169,7 +185,7 @@
             for (let row = 1; row < 9; row++) {
                 html2 += "<tr>"
                 for (let col = 8; col > 0; col--) {
-                  let actualCellId = letters[col - 1] + row
+                    let actualCellId = letters[col - 1] + row
                     let id2 = letters[col - 1] + row + "_2"
                     html2 += board[actualCellId].getCellHtml2()
                 }
@@ -180,17 +196,17 @@
         }
 
         function addPieces() {
-          for ( let pieceId in pieces) {
-            let piece = pieces[pieceId]
-            let cellId = piece.cellId
-            
-            board[cellId].setPiece(pieceId) // for logic 
-            let cellId1_dom = cellId // for display
-            let cellId2_dom = cellId + "_2" // for display
-            
-            document.getElementById(cellId1_dom).innerHTML = piece.getHtml()
-            document.getElementById(cellId2_dom).innerHTML = piece.getHtml()
-          }
+            for (let pieceId in pieces) {
+                let piece = pieces[pieceId]
+                let cellId = piece.cellId
+
+                board[cellId].setPiece(pieceId) // for logic 
+                let cellId1_dom = cellId // for display
+                let cellId2_dom = cellId + "_2" // for display
+
+                document.getElementById(cellId1_dom).innerHTML = piece.getHtml()
+                document.getElementById(cellId2_dom).innerHTML = piece.getHtml()
+            }
         }
         makeLogicBoard();
         addPieces()
