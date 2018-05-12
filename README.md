@@ -8,6 +8,6 @@ I like to use a simple python thing such as <br>
 python -m http.server 3030 ( python 2.x ) <br> 
 python -m SimpleHTTPServer 3030 <br> 
 <br>
-Running with that port would make this availabe at: http://localhost:3030/six.html<br>
+Running with that port would make this available at: http://localhost:3030/six.html<br>
 
 
