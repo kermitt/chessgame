@@ -3,9 +3,7 @@ let id2cell_lookup = {}
 function lookup(rowcol) {
     let r = rowcol[0]
     let c = rowcol[1]
-    let id1 = board[r][c].getPresentationId1() 
-    let id2 = board[r][c].getPresentationId2() 
-    return [id1, id2]
+    return board[r][c].getPresentationIds()
 } 
 function getCellById(cellId) {
     return id2cell_lookup[cellId]
@@ -32,7 +30,7 @@ function makePresentationTables() {
       for (let row = 7; row > -1; row--) {
         t1 += "<tr>"
         for (let col = 0; col < 8; col++) {
-            t1 += board[row][col].getHTML1()
+            t1 += "<td>" + board[row][col].getHTML1() + "</td>"
         }
         t1 += "</tr>" 
     }
@@ -44,7 +42,7 @@ function makePresentationTables() {
       for (let row = 0; row < 8; row++) {
         t2 += "<tr>"
         for (let col = 7; col > -1; col--) {
-            t2 += board[row][col].getHTML2()
+            t2 += "<td>" + board[row][col].getHTML2() + "</td>"
         }
         t2 += "</tr>" 
     }
@@ -57,49 +55,10 @@ function addPieces() {
         let piece = PIECES[pieceId]
         let cellId1 = piece.getCellId1()
         let cellId2 = piece.getCellId2()
-        
+
+        let cell = getCellById(piece.cellId)
+        cell.setPiece(pieceId, piece.color)
         document.getElementById(piece.getCellId1()).innerHTML = piece.getHTML1()
         document.getElementById(piece.getCellId2()).innerHTML = piece.getHTML2()
     }
 }
-
-
-class Cell {
-    constructor(row,col,id, css) { 
-        this.row = row
-        this.col = col
-        this.id = id 
-        this.presentationId1 = id + "_1"
-        this.presentationId2 = id + "_2"
-        this.css = css
-        this.isInfluenced = false
-        this.isAttacked = false
-        this.isSupported = false
-    } 
-    getHTML1() { 
-        let me = "<td>"
-        me += "<div class='" + this.css + "' id='" + this.presentationId1 + "' onclick='cellClick(\"" + this.id + "\",\"" + this.presentationId1 + "\")'>"
-        me += this.id
-        me += "</div>"
-        me += "</td>"
-        return me
-    } 
-    getHTML2() { 
-        let me = "<td>"
-        me += "<div class='" + this.css + "' id='" + this.presentationId2+ "' onclick='cellClick(\"" + this.id + "\",\"" + this.presentationId2 + "\")'>"
-        me += this.id
-        me += "</div>"
-        me += "</td>"
-        return me
-    } 
-
-    getId() { 
-        return this.id
-    } 
-    getPresentationId1() { 
-        return this.presentationId1
-    }
-    getPresentationId2() { 
-        return this.presentationId2
-    }
-} 
