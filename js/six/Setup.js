@@ -18,7 +18,6 @@ function setup() {
             let cell = new Cell(row,col, id, css) 
             board[row][col] = cell
             id2cell_lookup[id] = cell
-            
             k++
         }
         k++
@@ -60,5 +59,10 @@ function addPieces() {
         cell.setPiece(pieceId, piece.color)
         document.getElementById(piece.getCellId1()).innerHTML = piece.getHTML1()
         document.getElementById(piece.getCellId2()).innerHTML = piece.getHTML2()
+    }
+
+    for (let pieceId in PIECES) {
+        let piece = PIECES[pieceId]
+        piece.determinePossibleMoves()
     }
 }

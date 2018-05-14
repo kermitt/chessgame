@@ -17,15 +17,26 @@ class Cell {
         this.pieceColor = undefined;
     } 
     removePiece() {
-        this.piece = undefined; 
+        this.pieceId = undefined; 
         this.pieceColor = undefined; 
+        document.getElementById(this.presentationId1).innerHTML = ""
+        document.getElementById(this.presentationId2).innerHTML = ""
+        
     }
     setPiece(pieceId, pieceColor) {
-        this.pieceid = pieceId
+        this.pieceId = pieceId
         this.pieceColor = pieceColor
+        document.getElementById(this.presentationId1).innerHTML = pieceId
+        document.getElementById(this.presentationId2).innerHTML = pieceId
     }
+
+
+
     getPieceColor() { 
         return this.pieceColor
+    }
+    getPiece() { 
+        return this.pieceId;
     }
     getHTML1() { 
         let me = "<div class='" + this.css + "' id='" + this.presentationId1 + "' onclick='cellClick(\"" + this.id + "\",\"" + this.presentationId1 + "\")'>"
@@ -39,6 +50,7 @@ class Cell {
         me += "</div>"
         return me
     } 
+    /*
     setIsSelected(flag) { 
         if ( flag ) { 
             this.isSelected = true
@@ -50,6 +62,7 @@ class Cell {
             document.getElementById(this.presentationId2).classList.remove("selected")
         }
     }
+    */
     setIsInfluenced(flag) {
         if ( flag ) { 
             this.isInfluenced = true
@@ -72,7 +85,6 @@ class Cell {
             document.getElementById(this.presentationId2).classList.remove("attack")
         }
     }
-
     setIsSupported(flag) { 
         if ( flag ) {
             this.isSupported = true 
@@ -84,6 +96,7 @@ class Cell {
             document.getElementById(this.presentationId2).classList.remove("support")
         }
     }
+    
 
     getId() { 
         return this.id

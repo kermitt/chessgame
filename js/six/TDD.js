@@ -8,7 +8,26 @@ function verdict(isOk, msg, reportingId) {
     }
 }
 
+function test_possible_moves(btn) { 
 
+    let id = "wk2"
+    let piece = PIECES[id]
+
+    let expected = {
+      "2_7": "influenced",
+      "2_5": "influenced",
+      "1_4": "support"
+    }
+
+    let e = JSON.stringify(expected)
+    console.log("test_possible_moves\n" + JSON.stringify(piece.possible,null,2))
+    let a = JSON.stringify(piece.possible)
+
+    let isOk = e === a
+    verdict(isOk,"test_possible_moves", btn)
+
+
+}
 
 function test_cell_id(btn) {
     let expected = {
